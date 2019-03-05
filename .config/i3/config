@@ -1,0 +1,201 @@
+set $mod Mod1
+set $TERMINAL urxvt
+
+# Define names for default workspaces for which we configure key bindings later on.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+#gruvbox colors
+set $bg #282828
+set $red #cc241d
+set $green #98971a
+set $yellow #d79921
+set $blue #458588
+set $purple #b16286
+set $aqua #689d68
+set $gray #a89984
+set $darkgray #1d2021
+
+font pango:xos4 Terminus 10 
+#font pango:System San Francisco Display 10
+
+floating_modifier $mod
+
+bindsym $mod+Return exec $TERMINAL
+bindsym $mod+Shift+q kill
+bindsym $mod+d exec dmenu_run -i -fn "xos4 Terminus:size=10" -nb '#282828' -nf '#ebdbb2' -sb '#458588' -sf '#282828'
+
+# gaps
+for_window [class="^.*"] border pixel 0
+#gaps outer 5
+gaps inner 10
+#smart_gaps on
+
+# thin borders
+hide_edge_borders both
+
+# dunst
+exec --no-startup-id dunst -config $HOME/.config/dunst/dunstrc &
+
+#gruvbox colors
+client.focused          $blue $blue $darkgray $purple $gray
+client.focused_inactive $darkgray $darkgray $yellow $purple $darkgray
+client.unfocused        $darkgray $darkgray $yellow $purple $darkgray
+client.urgent           $red $red $white $red $red
+client.background #ffffff
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+$mod1+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# print your screen
+bindsym Print exec "scrot -q 100 -t 70 -e 'mv $f $HOME/Pictures/screenshots/'"
+bindsym --release Shift+Print exec "scrot -s -q 100 -t 70 -e 'mv $f $HOME/Pictures/screenshots/'"
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'I seen fucking eunuchs with more balls than you.' -b 'Yes, exit i3' 'i3-msg exit'"
+# lock the computer
+bindsym $mod+Shift+Return exec "blurlock"
+
+mode "resize" {
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"  
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Pause mode "$mode_system"
+
+bar {
+#       status_command i3status
+	status_command i3blocks -c $HOME/.config/i3/i3blocks
+#	status_command bumblebee-status -m spotify mpd memory date time -t gruvbox-powerline -p time-format="%H:%M:%S" date.format="%d/%m/%Y"
+	position top
+	colors {
+		background $bg
+		statusline $yellow
+		focused_workspace $aqua $aqua $darkgray
+		inactive_workspace $darkgray $darkgray $yellow
+		active_workspace $darkgray $darkgray $yellow
+		urgent_workspace $red $red $bg
+	}
+}       
+
+# autostart
+exec --no-startup-id setxkbmap br -variant abnt2
+exec --no-startup-id xrandr --dpi 115
+exec_always --no-startup-id feh --bg-scale $HOME/.bg.jpg
+exec_always xrdb $HOME/.Xresources
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec --no-startup-id compton -b
+#exec --no-startup-id "/usr/bin/compton --xrender-sync-fence --vsync opengl-swc --backend glx --unredir-if-possible --blur-background --blur-background-fixed --blur-kern '15,15,0.140858,0.182684,0.227638,0.272532,0.313486,0.346456,0.367879,0.375311,0.367879,0.346456,0.313486,0.272532,0.227638,0.182684,0.140858,0.182684,0.236928,0.295230,0.353455,0.406570,0.449329,0.477114,0.486752,0.477114,0.449329,0.406570,0.353455,0.295230,0.236928,0.182684,0.227638,0.295230,0.367879,0.440432,0.506617,0.559898,0.594521,0.606531,0.594521,0.559898,0.506617,0.440432,0.367879,0.295230,0.227638,0.272532,0.353455,0.440432,0.527292,0.606531,0.670320,0.711770,0.726149,0.711770,0.670320,0.606531,0.527292,0.440432,0.353455,0.272532,0.313486,0.406570,0.506617,0.606531,0.697676,0.771052,0.818731,0.835270,0.818731,0.771052,0.697676,0.606531,0.506617,0.406570,0.313486,0.346456,0.449329,0.559898,0.670320,0.771052,0.852144,0.904837,0.923116,0.904837,0.852144,0.771052,0.670320,0.559898,0.449329,0.346456,0.367879,0.477114,0.594521,0.711770,0.818731,0.904837,0.960789,0.980199,0.960789,0.904837,0.818731,0.711770,0.594521,0.477114,0.367879,0.375311,0.486752,0.606531,0.726149,0.835270,0.923116,0.980199,0.980199,0.923116,0.835270,0.726149,0.606531,0.486752,0.375311,0.367879,0.477114,0.594521,0.711770,0.818731,0.904837,0.960789,0.980199,0.960789,0.904837,0.818731,0.711770,0.594521,0.477114,0.367879,0.346456,0.449329,0.559898,0.670320,0.771052,0.852144,0.904837,0.923116,0.904837,0.852144,0.771052,0.670320,0.559898,0.449329,0.346456,0.313486,0.406570,0.506617,0.606531,0.697676,0.771052,0.818731,0.835270,0.818731,0.771052,0.697676,0.606531,0.506617,0.406570,0.313486,0.272532,0.353455,0.440432,0.527292,0.606531,0.670320,0.711770,0.726149,0.711770,0.670320,0.606531,0.527292,0.440432,0.353455,0.272532,0.227638,0.295230,0.367879,0.440432,0.506617,0.559898,0.594521,0.606531,0.594521,0.559898,0.506617,0.440432,0.367879,0.295230,0.227638,0.182684,0.236928,0.295230,0.353455,0.406570,0.449329,0.477114,0.486752,0.477114,0.449329,0.406570,0.353455,0.295230,0.236928,0.182684,0.140858,0.182684,0.227638,0.272532,0.313486,0.346456,0.367879,0.375311,0.367879,0.346456,0.313486,0.272532,0.227638,0.182684,0.140858' -Cc"
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
