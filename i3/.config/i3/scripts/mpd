@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#NCMP=$(mpc | grep "^\[playing\]" | awk '{print $1}')
+#NUM_NCMP=$(mpc | head -1 | wc -c )
+#S_NCMP=$(mpc | head -1 | head -c 30)
+
+
+filter() {
+    if [ "$(playerctl -p spotify status)" = "Playing" ];then
+            echo -e "$(playerctl -p spotify metadata artist) - $(playerctl -p spotify metadata title)"
+	else
+    	echo -e "Paused"
+	fi
+}
+
+case $BLOCK_BUTTON in
+	1) gmpc | filter ;;  # right click, pause/unpause
+	3) mpc toggle  | filter ;;  # right click, pause/unpause
+    4) mpc prev    | filter ;;  # scroll up, previous
+    5) mpc next    | filter ;;  # scroll down, next
+    *) mpc current | filter ;;
+esac

@@ -12,14 +12,14 @@ interval=5
 #label=
 #interval=10
 
-#[cpu_usage]
-#label=
-#interval=10
-#min_width=100.00%
+[cpu_usage]
+label=
+interval=10
+min_width=100.00%
 
-#[mem]
-#command=~/.config/i3/scripts/mem -m
-#interval=10
+[mem]
+command=~/.config/i3/scripts/mem -m
+interval=10
 
 #[disk]
 #command=~/.config/i3/scripts/disk
@@ -44,27 +44,27 @@ interval=5
 #label=
 #interval=10
 
-[uptime]
-command=~/.config/i3/scripts/uptime
-label=
-interval=60
+#[uptime]
+#command=~/.config/i3/scripts/uptime
+#label=
+#interval=60
 
 [date]
-label=
+#label=
 command=date '+%d/%m'
 interval=300
 
 [time]
-label=
+#label=
 command=date '+%H:%M'
 interval=5
 
-[volume]
-command=~/.config/i3/scripts/volume
+#volume]
+#command=~/.config/i3/scripts/volume
 #label=
-instance=Master
-interval=5
-signal=10
+#instance=Master
+#interval=5
+#signal=10
 
 #[netled]
 #command=sleep 0.1; ~/.config/i3/scripts/netled

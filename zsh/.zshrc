@@ -13,5 +13,7 @@ autoload -Uz compinit promptinit
 compinit
 promptinit
 
+autoload -U colors && colors
+
 prompt walters
 # End of lines added by compinstall
